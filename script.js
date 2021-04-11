@@ -87,3 +87,15 @@ const displayMovements = movements => {
   });
 };
 displayMovements(account1.movements);
+
+const createUserNames = accounts => {
+  accounts.forEach(account => {
+    account.userName = account.owner
+      .toLowerCase()
+      .split(' ')
+      .map(name => name[0])
+      .join('');
+  });
+};
+createUserNames(accounts);
+console.log(accounts);
