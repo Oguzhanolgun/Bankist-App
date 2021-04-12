@@ -91,20 +91,20 @@ const calcDisplayBalance = movements => {
   const balance = movements.reduce((acc, movement) => acc + movement);
   labelBalance.textContent = `${balance} EUR`;
 };
-const calcDisplaySummary = movements => {
-  const income = movements
+const calcDisplaySummary = account => {
+  const income = account.movements
     .filter(movement => movement > 0)
     .reduce((acc, movement) => acc + movement, 0);
   labelSumIn.textContent = `${income}€`;
 
-  const out = movements
+  const out = account.movements
     .filter(movement => movement < 0)
     .reduce((acc, movement) => acc + movement, 0);
   labelSumOut.textContent = `${Math.abs(out)} €`;
 
-  const interest = movements
+  const interest = account.movements
     .filter(movement => movement > 0)
-    .map(deposit => (deposit * 1.2) / 100)
+    .map(deposit => (deposit * account.interestRate) / 100)
     .filter(ints => ints >= 1)
     .reduce((acc, ints) => acc + ints);
 
@@ -119,13 +119,19 @@ btnLogin.addEventListener('click', e => {
   );
   if (currentAccount?.pin === Number(inputLoginPin.value)) {
     // Display UI message
-    labelWelcome.textContent = `${currentAccount.owner.split(' ')[0]}`;
+    labelWelcome.textContent = `Welcome Back, ${
+      currentAccount.owner.split(' ')[0]
+    }`;
     containerApp.style.opacity = 100;
     // Clear Input Fields
     inputLoginUsername.value = inputLoginPin.value = '';
     inputLoginPin.blur();
+    // Display movements
     displayMovements(currentAccount.movements);
+    // Display balance
     calcDisplayBalance(currentAccount.movements);
+    // Display summary
+    calcDisplaySummary(currentAccount);
   }
 });
 
