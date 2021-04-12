@@ -94,6 +94,27 @@ const calcDisplayBudget = movements => {
 };
 calcDisplayBudget(account1.movements);
 
+const calcDisplaySummary = movements => {
+  const income = movements
+    .filter(movement => movement > 0)
+    .reduce((acc, movement) => acc + movement, 0);
+  labelSumIn.textContent = `${income}€`;
+
+  const out = movements
+    .filter(movement => movement < 0)
+    .reduce((acc, movement) => acc + movement, 0);
+  labelSumOut.textContent = `${Math.abs(out)} €`;
+
+  const interest = movements
+    .filter(movement => movement > 0)
+    .map(deposit => (deposit * 1.2) / 100)
+    .filter(ints => ints >= 1)
+    .reduce((acc, ints) => acc + ints);
+
+  labelSumInterest.textContent = `${interest} €`;
+};
+calcDisplaySummary(account1.movements);
+
 const createUserNames = accounts => {
   accounts.forEach(account => {
     account.userName = account.owner
