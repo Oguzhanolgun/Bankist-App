@@ -156,6 +156,7 @@ btnTransfer.addEventListener('click', e => {
   const receiverAcc = accounts.find(
     account => account.userName === inputTransferTo.value
   );
+  inputTransferAmount.value = inputTransferTo.value = '';
   if (
     amount > 0 &&
     currentAccount.balance >= amount &&
@@ -169,6 +170,20 @@ btnTransfer.addEventListener('click', e => {
     // Update UI
     updateUI(currentAccount);
   }
+});
+btnLoan.addEventListener('click', e => {
+  e.preventDefault();
+  const amount = Number(inputLoanAmount.value);
+  if (
+    amount > 0 &&
+    currentAccount.movements.some(movement => movement >= amount * 0.1)
+  ) {
+    // Add movement
+    currentAccount.movements.push(amount);
+    // Update UI
+    updateUI(currentAccount);
+  }
+  inputLoanAmount.value = '';
 });
 
 btnClose.addEventListener('click', e => {
