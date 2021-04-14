@@ -134,6 +134,7 @@ btnLogin.addEventListener('click', e => {
   currentAccount = accounts.find(
     account => inputLoginUsername.value === account.userName
   );
+  console.log(currentAccount);
   if (currentAccount?.pin === Number(inputLoginPin.value)) {
     // Display UI message
     labelWelcome.textContent = `Welcome Back, ${
@@ -168,4 +169,20 @@ btnTransfer.addEventListener('click', e => {
     // Update UI
     updateUI(currentAccount);
   }
+});
+
+btnClose.addEventListener('click', e => {
+  e.preventDefault();
+  console.log('click');
+  if (
+    currentAccount.userName === inputCloseUsername.value &&
+    currentAccount.pin === Number(inputClosePin.value)
+  ) {
+    const currentAccIndex = accounts.findIndex(
+      account => currentAccount === account
+    );
+    accounts.splice(currentAccIndex, 1);
+    containerApp.style.opacity = 0;
+  }
+  inputCloseUsername.value = inputClosePin.value = '';
 });
