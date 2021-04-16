@@ -7,14 +7,14 @@
 // Data
 const account1 = {
   owner: 'Jonas Schmedtmann',
-  movements: [200, 450, -400, 3000, -650, -130, 70, 1300],
+  movements: [200, 455.23, -306.5, 25000, -642.21, -133.9, 79.97, 1300],
   interestRate: 1.2, // %
   pin: 1111,
 };
 
 const account2 = {
   owner: 'Jessica Davis',
-  movements: [5000, 3400, -150, -790, -3210, -1000, 8500, -30],
+  movements: [5000, 3400.5, -150, -790, -3210, -1000.83, 8500, -30],
   interestRate: 1.5,
   pin: 2222,
 };
@@ -82,7 +82,7 @@ const displayMovements = (movements, sort = false) => {
     const type = mov > 0 ? 'deposit' : 'withdrawal';
     const html = `<div class="movements__row">
     <div class="movements__type movements__type--${type}">${i + 1} ${type}</div>
-    <div class="movements__value">${mov}€</div>
+    <div class="movements__value">${mov.toFixed(2)}€</div>
   </div>`;
     containerMovements.insertAdjacentHTML('afterbegin', html);
   });
@@ -90,18 +90,18 @@ const displayMovements = (movements, sort = false) => {
 
 const calcDisplayBalance = account => {
   account.balance = account.movements.reduce((acc, movement) => acc + movement);
-  labelBalance.textContent = `${account.balance} EUR`;
+  labelBalance.textContent = `${account.balance.toFixed(2)} EUR`;
 };
 const calcDisplaySummary = account => {
   const income = account.movements
     .filter(movement => movement > 0)
     .reduce((acc, movement) => acc + movement, 0);
-  labelSumIn.textContent = `${income}€`;
+  labelSumIn.textContent = `${income.toFixed(2)}€`;
 
   const out = account.movements
     .filter(movement => movement < 0)
     .reduce((acc, movement) => acc + movement, 0);
-  labelSumOut.textContent = `${Math.abs(out)} €`;
+  labelSumOut.textContent = `${Math.abs(out).toFixed(2)} €`;
 
   const interest = account.movements
     .filter(movement => movement > 0)
@@ -109,7 +109,7 @@ const calcDisplaySummary = account => {
     .filter(ints => ints >= 1)
     .reduce((acc, ints) => acc + ints);
 
-  labelSumInterest.textContent = `${interest} €`;
+  labelSumInterest.textContent = `${interest.toFixed(2)} €`;
 };
 
 const createUserNames = accounts => {
@@ -174,7 +174,7 @@ btnTransfer.addEventListener('click', e => {
 });
 btnLoan.addEventListener('click', e => {
   e.preventDefault();
-  const amount = Number(inputLoanAmount.value);
+  const amount = Math.floor(inputLoanAmount.value);
   if (
     amount > 0 &&
     currentAccount.movements.some(movement => movement >= amount * 0.1)
